@@ -1,9 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Search, Menu, X, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Check, AlertTriangle, PackageCheck, Factory, Truck, Ship, Landmark, FileText, CircleDollarSign } from "lucide-react";
 import { caseFacts, glossary, notes, steps, topics, type Step, type Topic } from "@/lib/content";
+
+function Link({href,children,...props}:React.AnchorHTMLAttributes<HTMLAnchorElement>&{href:string}){
+  return <a href={href} {...props}>{children}</a>;
+}
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
