@@ -116,7 +116,7 @@ function IncotermsVisual(){
   return <div className="incoterms">
     <div className="switcher term-switcher" role="tablist" aria-label="选择贸易术语">{Object.keys(data).map(k=><button role="tab" aria-selected={term===k} key={k} onClick={()=>setTerm(k)}><span>{k}</span>{commonTerms.has(k)&&<small>常用</small>}</button>)}</div>
     <div className="selected-term"><strong>{term} · {d.en}</strong><span>{d.zh}</span><small>{d.mode}</small></div>
-    <div className="transport-line">{labels.map((x,i)=><div key={x} className={i===d.risk?"risk-point":""}><span>{i===d.risk?"风险转移":""}</span><b>{i+1}</b><small>{x}</small></div>)}</div>
+    <div className="transport-line route-road" aria-label="从卖方场所到卸货完成的运输路线">{labels.map((x,i)=><div key={x} className={i===d.risk?"risk-point":""}><span>{i===d.risk?"风险转移":""}</span><b>{i+1}</b><small>{x}</small></div>)}</div>
     <div className="three-lines"><p><span className="risk-dot"/>风险：第 {d.risk+1} 节点转移</p><p><span className="cost-dot"/>卖方费用：至第 {d.cost+1} 节点</p><p><span className="insurance-dot"/>保险：{d.insurance}</p></div>
     <div className="visual-note"><b>{term} · {d.mode}</b><span>{d.note}</span></div>
     <div className="terms-table" aria-label="Incoterms 2020全部11项术语"><div className="terms-head"><b>术语</b><b>英文全称</b><b>中文名称</b></div>{Object.entries(data).map(([key,item])=><button key={key} onClick={()=>setTerm(key)} aria-current={term===key?"true":undefined}><b>{key}{commonTerms.has(key)&&<small className="common-tag">常用</small>}</b><span>{item.en}</span><span>{item.zh}</span></button>)}</div>
