@@ -96,7 +96,7 @@ function Visual({topic}:{topic:Topic}) {
 }
 
 function IncotermsVisual(){
-  const [term,setTerm]=useState("FCA");
+  const [term,setTerm]=useState("FOB");
   const data:{[k:string]:{en:string,zh:string,risk:number,cost:number,insurance:string,mode:string,note:string}}={
     EXW:{en:"Ex Works",zh:"工厂交货（指定交货地点）",risk:0,cost:0,insurance:"无强制投保义务",mode:"任何运输方式",note:"卖方在指定场所将货物置于买方处置，不负责装上买方车辆或出口清关"},
     FCA:{en:"Free Carrier",zh:"货交承运人（指定交货地点）",risk:1,cost:1,insurance:"无强制投保义务",mode:"任何运输方式",note:"案例采用：卖方仓库装上买方来车并交承运人；卖方负责出口清关"},
@@ -112,13 +112,69 @@ function IncotermsVisual(){
   };
   const d=data[term];
   const commonTerms=new Set(["FCA","FOB","CIF","DDP"]);
-  const labels=["卖方场所","交首程承运人","国内运输","出口通关 / 船边","装船","国际运输","目的港","进口清关","指定目的地待卸","卸货完成"];
+  const labels=["卖方场所","交承运人","国内运输","出口通关","装船","国际运输","目的港","进口清关","目的地","卸货完成"];
+  const sellerW=(n:number)=>`${(n+1)*10}%`;
+  const buyerW=(n:number)=>`${(9-n)*10}%`;
+  const hasInsurance=d.insurance.includes("卖方");
+  const gapExists=d.risk!==d.cost;
   return <div className="incoterms">
     <div className="switcher term-switcher" role="tablist" aria-label="选择贸易术语">{Object.keys(data).map(k=><button role="tab" aria-selected={term===k} key={k} onClick={()=>setTerm(k)}><span>{k}</span>{commonTerms.has(k)&&<small>常用</small>}</button>)}</div>
     <div className="selected-term"><strong>{term} · {d.en}</strong><span>{d.zh}</span><small>{d.mode}</small></div>
-    <div className="transport-line route-road" aria-label="从卖方场所到卸货完成的运输路线">{labels.map((x,i)=><div key={x} className={i===d.risk?"risk-point":""}><span>{i===d.risk?"风险转移":""}</span><b>{i+1}</b><small>{x}</small></div>)}</div>
-    <div className="three-lines"><p><span className="risk-dot"/>风险：第 {d.risk+1} 节点转移</p><p><span className="cost-dot"/>卖方费用：至第 {d.cost+1} 节点</p><p><span className="insurance-dot"/>保险：{d.insurance}</p></div>
-    <div className="visual-note"><b>{term} · {d.mode}</b><span>{d.note}</span></div>
+
+    {/* Three-track visualization: Risk / Cost / Insurance */}
+    <div className="incoterms-tracks" aria-label="风险、费用和保险三个维度的分界">
+      <div className="tracks-legend"><span className="leg-seller"/><b>卖方承担</b><span className="leg-buyer"/><b>买方承担</b></div>
+
+      {/* Risk track */}
+      <div className="track-row">
+        <div className="track-label risk-label">风险<small>Risk</small></div>
+        <div className="track-content">
+          <div className="track-bar">
+            <div className="seg seller" style={{width:sellerW(d.risk)}}><span>卖方</span></div>
+            <div className="seg buyer" style={{width:buyerW(d.risk)}}><span>买方</span></div>
+          </div>
+          <div className="track-pin" style={{left:`calc(${sellerW(d.risk)} - 1px)`}}><i/><b>{labels[d.risk]}</b></div>
+        </div>
+      </div>
+
+      {/* Cost track */}
+      <div className="track-row">
+        <div className="track-label cost-label">费用<small>Cost</small></div>
+        <div className="track-content">
+          <div className="track-bar">
+            <div className="seg seller" style={{width:sellerW(d.cost)}}><span>卖方</span></div>
+            <div className="seg buyer" style={{width:buyerW(d.cost)}}><span>买方</span></div>
+          </div>
+          <div className="track-pin" style={{left:`calc(${sellerW(d.cost)} - 1px)`}}><i/><b>{labels[d.cost]}</b></div>
+        </div>
+      </div>
+
+      {/* Insurance track */}
+      <div className="track-row">
+        <div className="track-label insurance-label">保险<small>Insurance</small></div>
+        <div className="track-content">
+          <div className="track-bar insurance-bar">
+            {hasInsurance
+              ?<div className="seg seller full"><span>{d.insurance}</span></div>
+              :<div className="seg buyer full"><span>无强制投保义务（由双方另约）</span></div>}
+          </div>
+        </div>
+      </div>
+
+      {/* Node scale at bottom */}
+      <div className="track-nodes">
+        <div className="track-label"></div>
+        <div className="track-content"><div className="node-scale">{labels.map((l,i)=><span key={l} className={(i===d.risk||i===d.cost)?"active":""}><b>{i+1}</b>{l}</span>)}</div></div>
+      </div>
+    </div>
+
+    {/* Key insight callout */}
+    <div className={gapExists?"insight-callout gap":"insight-callout"}>
+      {gapExists
+        ?<><AlertTriangle size={18}/><div><strong>关键区别：风险与费用不在同一节点！</strong><p>风险在第 <b>{d.risk+1}</b> 节点（{labels[d.risk]}）转移给买方，但卖方费用延伸到第 <b>{d.cost+1}</b> 节点（{labels[d.cost]}）。CIF/CFR/CPT/CIP 等C类术语均有此特征——<b>付了运费 ≠ 承担全程风险</b>。</p></div></>
+        :<><Check size={18}/><div><strong>风险与费用在同一点转移</strong><p>{d.note}</p></div></>}
+    </div>
+
     <div className="terms-table" aria-label="Incoterms 2020全部11项术语"><div className="terms-head"><b>术语</b><b>英文全称</b><b>中文名称</b></div>{Object.entries(data).map(([key,item])=><button key={key} onClick={()=>setTerm(key)} aria-current={term===key?"true":undefined}><b>{key}{commonTerms.has(key)&&<small className="common-tag">常用</small>}</b><span>{item.en}</span><span>{item.zh}</span></button>)}</div>
   </div>
 }
