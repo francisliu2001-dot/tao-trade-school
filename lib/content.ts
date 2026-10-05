@@ -192,7 +192,16 @@ export const topics: Topic[] = [
     slug: "tax-refund", category: "收尾", title: "出口退税怎么理解，0%就是不能退吗？", question: "退税率为0还要区分适用出口免税还是出口征税，不能只按‘没有退税’处理。", plain: "出口退（免）税是对符合条件的出口业务按现行制度免征并退还或抵扣国内环节相关税额，不是凭出口额额外奖励。", details: ["外贸企业免退税与生产企业免抵退税的计算路径不同。", "退税额受合法有效进货凭证、计税依据、退税率、商品政策属性和申报数据影响。", "2020年后，未在原规定期限申报或收汇的，符合规定时可在凭证、信息收齐或收汇后申报；不要机械沿用‘次年4月30日后绝对不能申报’。", "0%商品需查询系统提示与适用政策，区分免税与视同内销征税等情形。"], caseUse: "案例不写死保温杯退税率；财务在实际出口当期按HS与政策属性查询，并基于真实进项和报关数据测算。", keyPoints: ["资料中的13%/9%/0%只是情景测算", "2–4个月不是统一法定退税周期", "退税与利润不能脱离进项税和企业类型"], recap: "先确认企业类型、商品政策属性、凭证和当期税率，再计算。", related: ["customs", "invoice-packing", "forex"], visual: "flow", keywords: ["出口退税", "免抵退", "免退税", "零退税率", "进项税"], updated: "2026-10-05", source: [{label:"国家税务总局出口退税申报期限答复",url:"https://www.chinatax.gov.cn/chinatax/c102449/c5232652/content.html"},{label:"国家税务总局新退（免）税管理办法说明",url:"https://www.chinatax.gov.cn/chinatax/n810219/n810724/c5247479/content.html"}]
   },
   {
-    slug: "forex", category: "收尾", title: "现在还要逐票做‘外汇核销’吗？", question: "旧式逐笔核销已退出，现行重点是银行真实性审核、名录管理和外汇局总量监测与异常核查。", plain: "企业通过银行办理货物贸易外汇收支，并对真实合法交易背景负责；外汇局运用报关与收付款等数据开展监测。", details: ["自2024年6月1日起，企业原则上在首笔货物贸易外汇收支前到境内银行办理名录登记。", "银行按展业原则审核交易背景、主体和收付汇信息。", "预收、延收、退款、第三方付款等特殊情形要按适用规则准备解释与报告。", "企业应让合同、发票、报关、物流与收付款形成合理匹配，但并非所有业务机械逐票一对一。"], caseUse: "案例两笔T/T共USD 17,600，付款方、合同买方和报关交易背景一致；财务保留定金与尾款对应说明。", keyPoints: ["资料中的‘必须一对一或多对多匹配’过度绝对", "名录登记已由银行直接办理", "汇率套保是风险管理，不是保证额外收益"], recap: "不再是老式核销单逻辑，核心是真实、可解释、可追溯。", related: ["payments", "tax-refund", "trade-basics"], visual: "flow", keywords: ["外汇核销", "收汇", "名录登记", "数字外管", "预收货款", "延期收款"], updated: "2026-10-05", source: [{label:"国家外汇管理局优化贸易外汇业务通知",url:"https://www.safe.gov.cn/sichuan/2024/0407/2784.html"},{label:"货物贸易外汇名录登记说明",url:"https://www.safe.gov.cn/beijing/2024/0607/2394.html"}]
+    slug: "forex", category: "收尾", title: "现在还要逐票做'外汇核销'吗？", question: "旧式逐笔核销已退出，现行重点是银行真实性审核、名录管理和外汇局总量监测与异常核查。", plain: "企业通过银行办理货物贸易外汇收支，并对真实合法交易背景负责；外汇局运用报关与收付款等数据开展监测。", details: ["自2024年6月1日起，企业原则上在首笔货物贸易外汇收支前到境内银行办理名录登记。", "银行按展业原则审核交易背景、主体和收付汇信息。", "预收、延收、退款、第三方付款等特殊情形要按适用规则准备解释与报告。", "企业应让合同、发票、报关、物流与收付款形成合理匹配，但并非所有业务机械逐票一对一。"], caseUse: "案例两笔T/T共USD 17,600，付款方、合同买方和报关交易背景一致；财务保留定金与尾款对应说明。", keyPoints: ["资料中的'必须一对一或多对多匹配'过度绝对", "名录登记已由银行直接办理", "汇率套保是风险管理，不是保证额外收益"], recap: "不再是老式核销单逻辑，核心是真实、可解释、可追溯。", related: ["payments", "tax-refund", "trade-basics"], visual: "flow", keywords: ["外汇核销", "收汇", "名录登记", "数字外管", "预收货款", "延期收款"], updated: "2026-10-05", source: [{label:"国家外汇管理局优化贸易外汇业务通知",url:"https://www.safe.gov.cn/sichuan/2024/0407/2784.html"},{label:"货物贸易外汇名录登记说明",url:"https://www.safe.gov.cn/beijing/2024/0607/2394.html"}]
+  },
+  {
+    slug: "trade-risks", category: "风控", title: "外贸常见风险有哪些，怎样提前防范？", question: "从信用、汇率、合规、物流和知识产权五个维度建立风险清单。", plain: "外贸风险不是'出事了才处理'，而是在接单、报价、生产和交付的每个节点提前识别并设置防线。", details: ["信用风险：买方违约或拒付；用预付比例、信用证或信保工具控制敞口。", "汇率风险：报价与收款之间的汇率波动；用远期、期权或合同汇率条款对冲。", "合规风险：产品不符合目的国准入、被限制或制裁；提前查认证、标签和管制清单。", "物流风险：灭失、延误、甩柜和滞期；选对术语、保险和承运人并保留签收证据。", "知识产权风险：产品在目的国被抢注商标或专利侵权；做FTO排查并注册自有商标。"], caseUse: "案例用30/70 T/T把发货前敞口控制在70%尾款；FCA让买方承担主运输风险。如改用L/C或出口信用保险，可进一步覆盖买方信用。", keyPoints: ["风险不是用一种工具消除全部", "预付不是越多越好，要匹配买方关系", "出口信用保险是工具而非万能盾牌"], recap: "先列出风险类型和金额敞口，再为每个风险选至少一道防线。", related: ["payments", "insurance", "contracts", "forex"], visual: "flow", keywords: ["外贸风险", "信用风险", "汇率风险", "出口信用保险", "合规风险", "知识产权"], updated: "2026-10-05", source: [{label:"中国出口信用保险公司",url:"https://www.sinosure.com.cn/"}]
+  },
+  {
+    slug: "e-commerce-export", category: "风控", title: "跨境电商B2B出口和传统外贸有什么不同？", question: "报关方式、收汇路径和平台角色都有变化，但合规底线不变。", plain: "跨境电商出口通过平台连接买卖双方，报关和物流常由平台或综合服务商代办，但企业仍对申报真实性和交易背景负责。", details: ["B2B直接出口（9710）和B2B海外仓出口（9810）是海关监管代码，适用跨境电商B2B。", "收汇可通过平台收单后结汇到企业账户，或通过第三方支付机构；仍需符合外汇真实性要求。", "平台规则不替代贸易术语和合同；平台纠纷处理有其时效和规则限制。", "食品、医疗器械等特殊品类即使走跨境电商也需满足准入和标签要求。"], caseUse: "如案例产品改为通过亚马逊或B2B平台出口，需按平台仓库要求备货和贴标，报关可走9710监管方式，收汇通过平台收单后结汇。", keyPoints: ["9710/9810是监管代码，不是免税通道", "平台代报关不转移企业申报责任", "跨境电商退税条件与传统贸易一致，须有合规进货凭证和报关数据"], recap: "平台改变的是通道和效率，不是合规底线。", related: ["customs", "tax-refund", "forex", "trade-basics"], visual: "flow", keywords: ["跨境电商", "9710", "9810", "B2B出口", "海外仓", "亚马逊", "平台"], updated: "2026-10-05", source: [{label:"海关跨境电商监管方式说明",url:"https://online.customs.gov.cn/"}]
+  },
+  {
+    slug: "trade-finance", category: "风控", title: "出口贸易融资有哪些常见工具？", question: "融资是用未来应收款或单据换取当下资金，关键是成本、控制和还款来源。", plain: "贸易融资让企业在等待收款期间获得流动资金，但不同工具的担保方式、成本和风险转移程度不同。", details: ["打包贷款：以信用证为依据在生产前获得融资，通常需开证行确认。", "出口押汇/贴现：交单后以单据或应收款为质押获得预付资金。", "福费廷（Forfaiting）：无追索权地买断远期信用证项下应收款，卖方将信用风险转移给融资方。", "出口保理：保理商提供应收款管理、催收和坏账担保，可带追索或不带追索。"], caseUse: "若案例改用60天远期L/C，工厂可考虑押汇或福费廷提前获得资金，但需比较融资成本与订单利润是否匹配。", keyPoints: ["有无追索权决定坏账由谁承担", "融资成本不是只有利率", "福费廷转移信用风险但通常需信用证项下"], recap: "先确认还款来源和追索权，再比较融资成本与订单利润。", related: ["payments", "letters-of-credit", "forex", "trade-risks"], visual: "flow", keywords: ["贸易融资", "打包贷款", "押汇", "福费廷", "保理", "Forfaiting", "应收账款"], updated: "2026-10-05", source: []
   },
 ];
 
@@ -200,6 +209,8 @@ export const notes = [
   { slug: "three-lines-of-incoterms", title: "别再只问‘运费谁付’：贸易术语要画三条线", summary: "用费用、风险、保险三条线拆开FOB、CIF与FCA，避免把目的港和风险终点混在一起。", date: "2026-10-05", category: "贸易术语", related: ["incoterms", "insurance"], body: ["很多争议来自把三个问题说成一个问题：谁付运费、货物灭失风险何时转移、谁有义务投保。它们可能在不同节点分开。", "CIF中卖方支付到目的港的主运费并投保，但风险通常在装运港货物装上船时转移；FCA则在约定地点交承运人时转移风险。", "实务中先写完整地点和规则版本，再把三条线分别标出。合同还要另行解决付款、货权和违约。"] },
   { slug: "first-inquiry-seven-questions", title: "第一次收到询盘，先问这7个问题", summary: "在报价格前确认用途、规格、数量、包装、目的地、到货时间和付款偏好。", date: "2026-10-05", category: "客户沟通", related: ["customer-development", "contracts"], body: ["询盘里常只有一张图片和一句‘best price’。直接报最低价，会把所有未知风险都塞进数字。", "依次确认用途与市场、规格材质、数量、包装、交付地点、期望到货时间、付款方式。客户答不全也没关系，先标出报价基于哪些假设。", "回复要短而具体：先复述已知需求，再一次提出三到四个最影响价格的问题，并说明得到答案后何时给正式报价。"] },
   { slug: "document-cross-check", title: "发货前10分钟：用一张表交叉核对单据", summary: "把合同、发票、箱单、报关资料和运输补料放到同一数据源检查。", date: "2026-10-05", category: "单证", related: ["invoice-packing", "customs", "bill-of-lading"], body: ["单据错误往往不是不会填，而是多个人从不同版本复制。最有效的做法是建立一张主数据表。", "逐项检查主体名称、发票号、合同号、货名、数量、单位、币种、金额、箱数、毛净重、体积、唛头、箱号封号、港口和日期。", "发现差异先回到实际货物与合同，而不是让所有单据盲目互相抄成同一个错误。"] },
+  { slug: "container-loading-photo", title: "装柜前到离港：拍这6类照片留证据", summary: "空柜、装半、满柜、封条、箱号和唛头，每类拍至少一张。", date: "2026-10-05", category: "物流", related: ["logistics", "bill-of-lading", "insurance"], body: ["装柜照片不是发朋友圈，是出险索赔、责任划分和异常说明的证据。", "六类关键照片：空柜内壁（确认无破损）、装半（展示码放方式）、满柜（确认填满方式）、封条号特写、箱号特写、唛头特写。", "照片要带时间戳，存入项目文件夹并同步给货代和买方指定人。出险时这些照片能快速说明货物状态和交接节点。"] },
+  { slug: "price-validity-reminder", title: "报价有效期：不是写个数，是管住风险", summary: "有效期覆盖汇率、原材料和运费的波动窗口，到期前主动复盘。", date: "2026-10-05", category: "报价", related: ["customer-development", "contracts", "forex"], body: ["很多业务员把报价有效期当格式项随手填30天，但有效期的本质是给报价设定一个风险可控的时间窗口。", "汇率、原材料和海运费都在波动。如果报价后30天内汇率跳了3%，而有效期又写得过长，利润就可能被吃掉。", "合理做法：根据产品成本结构和市场波动确定有效期，在到期前2-3天主动联系客户提醒复盘，而不是等客户在你过期报价上直接下单。"] },
 ];
 
 export const glossary: Record<string, { title: string; text: string; topic: string }> = {
@@ -208,6 +219,21 @@ export const glossary: Record<string, { title: string; text: string; topic: stri
   "提单": { title: "提单 · Bill of Lading (B/L)", text: "承运人签发的运输单据，可证明收货/装船和运输合同；部分类型在适用法律下具有权利凭证功能。", topic: "bill-of-lading" },
   "信用证": { title: "信用证 · Letter of Credit (L/C)", text: "银行按信用证条件对相符交单承担付款承诺的独立安排；银行审单，不替买家验货。", topic: "letters-of-credit" },
   "报关": { title: "报关 · Customs Declaration", text: "向海关申报进出口货物事实并接受审核、查验和放行管理的过程。", topic: "customs" },
+  "电放": { title: "电放 · Telex Release", text: "托运人指示承运人在目的港免交正本提单即放货的方式；需确认收款条件后再指示。", topic: "bill-of-lading" },
+  "退税": { title: "退税 · Export Tax Refund", text: "对符合条件的出口业务按现行制度免征并退还或抵扣国内环节相关税额，不是凭出口额额外奖励。", topic: "tax-refund" },
+  "FOB": { title: "FOB · Free On Board", text: "装运港货物装上买方指定船舶时交付并转移风险；仅适用于海运/内河运输。", topic: "incoterms" },
+  "CIF": { title: "CIF · Cost, Insurance and Freight", text: "卖方付运费和最低保险至目的港，但风险在装运港装船时转移。", topic: "incoterms" },
+  "FCA": { title: "FCA · Free Carrier", text: "卖方在指定地点将货物交给买方指定的承运人即完成交付；适用任何运输方式。", topic: "incoterms" },
+  "DDP": { title: "DDP · Delivered Duty Paid", text: "卖方负责出口、运输、进口清关及所有税费，在指定目的地交付；卖方风险和成本最大。", topic: "incoterms" },
+  "EXW": { title: "EXW · Ex Works", text: "卖方在指定场所将货物置于买方处置即完成交付；卖方不负责装车或出口清关。", topic: "incoterms" },
+  "T/T": { title: "T/T · Telegraphic Transfer", text: "银行电汇付款方式；风险取决于预付比例和发货前是否到账。", topic: "payments" },
+  "D/P": { title: "D/P · Documents against Payment", text: "托收项下付款交单：买方付款后银行才交出单据；银行通常不承诺买方一定付款。", topic: "payments" },
+  "D/A": { title: "D/A · Documents against Acceptance", text: "买方承兑远期汇票后取得单据，到期才付款；卖方承担更高到期不付款风险。", topic: "payments" },
+  "唛头": { title: "唛头 · Shipping Mark", text: "运输包装上的标识，通常含收货人、目的港、箱号和件数等信息，用于识别和清点货物。", topic: "invoice-packing" },
+  "VGM": { title: "VGM · Verified Gross Mass", text: "集装箱核实的总重量，含货物和包装；发货人需在截VGM前向承运人申报。", topic: "logistics" },
+  "AQL": { title: "AQL · Acceptable Quality Limit", text: "可接受质量限：抽样检验中允许的不合格品比例上限，常用于终检判定。", topic: "production" },
+  "原产地证": { title: "原产地证 · Certificate of Origin", text: "证明货物经济国籍的文件；优惠原产地证还需满足相应贸易协定的原产规则。", topic: "origin-certificate" },
+  "福费廷": { title: "福费廷 · Forfaiting", text: "无追索权地买断远期信用证项下应收款，卖方将信用风险转移给融资方。", topic: "trade-finance" },
 };
 
 export function topicBySlug(slug: string) { return topics.find((item) => item.slug === slug); }

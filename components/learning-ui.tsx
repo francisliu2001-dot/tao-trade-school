@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search, Menu, X, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Check, AlertTriangle, PackageCheck, Factory, Truck, Ship, Landmark, FileText, CircleDollarSign } from "lucide-react";
+import { Search, Menu, X, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Check, AlertTriangle, PackageCheck, Factory, Truck, Ship, Landmark, FileText, CircleDollarSign, BookOpen } from "lucide-react";
 import { caseFacts, glossary, notes, steps, topics, type Step, type Topic } from "@/lib/content";
 
 function Link({href,children,...props}:React.AnchorHTMLAttributes<HTMLAnchorElement>&{href:string}){
@@ -14,7 +14,7 @@ export function SiteHeader() {
     <div className="nav-wrap">
       <Link className="brand" href="/"><span className="brand-mark">T</span><span>TAO的外贸学堂</span></Link>
       <nav className={open ? "top-nav open" : "top-nav"} aria-label="主导航">
-        <Link href="/learn">外贸从0到1</Link><Link href="/topics">外贸进阶</Link><Link href="/notes">外贸笔记</Link>
+        <Link href="/learn">外贸从0到1</Link><Link href="/topics">外贸进阶</Link><Link href="/notes">外贸笔记</Link><Link href="/glossary">术语表</Link>
         <Link className="search-link" href="/search"><Search size={17}/>知识搜索</Link>
       </nav>
       <button className="menu-button" aria-expanded={open} aria-label={open ? "关闭菜单" : "打开菜单"} onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</button>
@@ -23,7 +23,7 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
-  return <footer className="site-footer"><div><strong>TAO的外贸学堂</strong><p>免费、免登录。把第一笔出口订单讲明白。</p></div><div className="footer-links"><Link href="/learn">从0到1</Link><Link href="/topics">进阶专题</Link><Link href="/notes">外贸笔记</Link></div><p className="footer-note">内容用于通识学习，不替代海关、税务、银行、律师或承运人的个案意见。规则核验：2026-10-05。</p></footer>
+  return <footer className="site-footer"><div><strong>TAO的外贸学堂</strong><p>免费、免登录。把第一笔出口订单讲明白。</p></div><div className="footer-links"><Link href="/learn">从0到1</Link><Link href="/topics">进阶专题</Link><Link href="/notes">外贸笔记</Link><Link href="/glossary">术语表</Link></div><p className="footer-note">内容用于通识学习，不替代海关、税务、银行、律师或承运人的个案意见。规则核验：2026-10-05。</p></footer>
 }
 
 export function InlineTerm({ term }: { term: keyof typeof glossary }) {
@@ -68,7 +68,7 @@ function Checklist({items}:{items:string[]}) { return <ul className="checklist">
 
 export function TopicsIndex() {
   const groups=[...new Set(topics.map(t=>t.category))];
-  return <><SiteHeader/><main className="wide-page"><div className="page-intro topic-intro"><span className="eyebrow">16个专题 · 可直接访问</span><h1>遇到问题，<br/>直接查答案。</h1><p>不必按顺序学习。每个专题都从一个实际问题开始，并标明核验来源与日期。</p><Link className="search-cta" href="/search"><Search size={18}/>搜索中文名词或英文缩写</Link></div>{groups.map(g=><section className="topic-group" key={g}><div className="group-label"><span>{g}</span><i>{topics.filter(t=>t.category===g).length}</i></div><div className="topic-list">{topics.filter(t=>t.category===g).map(t=><Link href={`/topics/${t.slug}`} key={t.slug}><span>{t.title}</span><small>{t.question}</small><ChevronRight/></Link>)}</div></section>)}</main><SiteFooter/></>
+  return <><SiteHeader/><main className="wide-page"><div className="page-intro topic-intro"><span className="eyebrow">{topics.length}个专题 · 可直接访问</span><h1>遇到问题，<br/>直接查答案。</h1><p>不必按顺序学习。每个专题都从一个实际问题开始，并标明核验来源与日期。</p><Link className="search-cta" href="/search"><Search size={18}/>搜索中文名词或英文缩写</Link></div>{groups.map(g=><section className="topic-group" key={g}><div className="group-label"><span>{g}</span><i>{topics.filter(t=>t.category===g).length}</i></div><div className="topic-list">{topics.filter(t=>t.category===g).map(t=><Link href={`/topics/${t.slug}`} key={t.slug}><span>{t.title}</span><small>{t.question}</small><ChevronRight/></Link>)}</div></section>)}</main><SiteFooter/></>
 }
 
 export function TopicPage({ topic }: { topic: Topic }) {
@@ -131,4 +131,19 @@ export function NotesIndex(){return <><SiteHeader/><main className="wide-page"><
 
 export function NotePage({note}:{note:(typeof notes)[number]}){return <><SiteHeader/><main className="article-layout"><aside className="toc"><span>文章信息</span><b>{note.category}</b><small>{note.date}</small></aside><article className="article note-article"><Link className="back" href="/notes"><ArrowLeft size={16}/>返回外贸笔记</Link><header className="article-head"><span className="eyebrow">{note.category} · {note.date}</span><h1>{note.title}</h1><p>{note.summary}</p></header>{note.body.map((p,i)=><p className="note-p" key={p}>{i===0?<strong>{p}</strong>:p}</p>)}<Related slugs={note.related}/></article></main><SiteFooter/></>}
 
-export function SearchPage(){ const [q,setQ]=useState(""); const results=useMemo(()=>{const s=q.trim().toLowerCase(); if(!s)return[]; return topics.filter(t=>[t.title,t.question,t.plain,...t.keywords,...t.details].join(" ").toLowerCase().includes(s))},[q]); return <><SiteHeader/><main className="search-page"><div className="search-title"><span className="eyebrow">站内知识搜索</span><h1>你想查什么？</h1><p>支持中文名词和FOB、CIF、T/T、L/C、HS等常用缩写。</p></div><label className="search-box"><Search/><input autoFocus value={q} onChange={e=>setQ(e.target.value)} placeholder="例如：电放、退税、FOB、信用证"/><kbd>/</kbd></label>{q.trim()===""?<div className="quick-search"><span>常见搜索</span>{["FOB","信用证","电放","出口退税","HS编码"].map(x=><button key={x} onClick={()=>setQ(x)}>{x}</button>)}</div>:results.length?<div className="search-results"><p>找到 {results.length} 个专题</p>{results.map(t=><Link href={`/topics/${t.slug}`} key={t.slug}><div><small>{t.category}</small><h2>{t.title}</h2><p>{t.plain}</p></div><ChevronRight/></Link>)}</div>:<div className="empty-result"><Search/><h2>没有找到“{q}”</h2><p>试试缩短关键词，或改用“海运”“付款”“单证”等更宽的词。</p><Link href="/topics">浏览全部16个专题</Link></div>}</main><SiteFooter/></>}
+export function GlossaryIndex(){
+  const entries=Object.entries(glossary).sort((a,b)=>a[0].localeCompare(b[0]));
+  return <><SiteHeader/><main className="wide-page"><div className="page-intro"><span className="eyebrow"><BookOpen size={14}/>术语表 · {entries.length} 个</span><h1>外贸名词，<br/>一句话讲清。</h1><p>点击任意术语查看简短解释，并跳转至对应专题深入了解。</p></div>
+  <div className="glossary-grid">
+    {entries.map(([key,item])=>
+      <Link href={`/topics/${item.topic}`} key={key} className="glossary-card">
+        <div className="glossary-head"><strong>{key}</strong><ChevronRight size={16}/></div>
+        <span className="glossary-title">{item.title}</span>
+        <p className="glossary-text">{item.text}</p>
+      </Link>
+    )}
+  </div>
+  </main><SiteFooter/></>
+}
+
+export function SearchPage(){ const [q,setQ]=useState(""); const results=useMemo(()=>{const s=q.trim().toLowerCase(); if(!s)return[]; return topics.filter(t=>[t.title,t.question,t.plain,...t.keywords,...t.details].join(" ").toLowerCase().includes(s))},[q]); return <><SiteHeader/><main className="search-page"><div className="search-title"><span className="eyebrow">站内知识搜索</span><h1>你想查什么？</h1><p>支持中文名词和FOB、CIF、T/T、L/C、HS等常用缩写。</p></div><label className="search-box"><Search/><input autoFocus value={q} onChange={e=>setQ(e.target.value)} placeholder="例如：电放、退税、FOB、信用证"/><kbd>/</kbd></label>{q.trim()===""?<div className="quick-search"><span>常见搜索</span>{["FOB","信用证","电放","出口退税","HS编码"].map(x=><button key={x} onClick={()=>setQ(x)}>{x}</button>)}</div>:results.length?<div className="search-results"><p>找到 {results.length} 个专题</p>{results.map(t=><Link href={`/topics/${t.slug}`} key={t.slug}><div><small>{t.category}</small><h2>{t.title}</h2><p>{t.plain}</p></div><ChevronRight/></Link>)}</div>:<div className="empty-result"><Search/><h2>没有找到“{q}”</h2><p>试试缩短关键词，或改用“海运”“付款”“单证”等更宽的词。</p><Link href="/topics">浏览全部{topics.length}个专题</Link></div>}</main><SiteFooter/></>}
