@@ -12,6 +12,12 @@
 .term-switcher button{position:relative}.term-switcher button small{display:block;font-size:9px;line-height:1;color:#7a4100}.term-switcher button[aria-selected=true] small{color:var(--yellow)}.common-tag{display:inline-block;margin-left:6px;background:var(--yellow);border:1px solid var(--line);border-radius:999px;padding:1px 5px;font-size:9px;vertical-align:2px}
 
 /* Incoterms three-track visualization */
+.term-detail{display:flex;gap:12px;margin:0 0 18px;padding:14px 18px;border:1.5px solid var(--line);border-radius:12px;background:var(--white);box-shadow:3px 4px 0 var(--line)}
+.term-detail>svg{flex-shrink:0;margin-top:2px;color:var(--muted)}
+.term-detail strong{display:block;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
+.term-detail p{font-size:14px;line-height:1.65;margin:0;color:var(--ink)}
+@media(max-width:640px){.term-detail{padding:12px 14px;gap:8px}.term-detail p{font-size:13px;line-height:1.6}}
+
 .incoterms-tracks{margin:24px 0 8px;border:1.5px solid var(--line);border-radius:14px;padding:22px 22px 16px;background:var(--white);box-shadow:var(--shadow)}
 .tracks-legend{display:flex;align-items:center;gap:8px 16px;margin-bottom:18px;font-size:13px;font-weight:800}
 .tracks-legend span{width:16px;height:16px;border:1.5px solid var(--line);border-radius:4px}

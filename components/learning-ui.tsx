@@ -97,18 +97,18 @@ function Visual({topic}:{topic:Topic}) {
 
 function IncotermsVisual(){
   const [term,setTerm]=useState("FOB");
-  const data:{[k:string]:{en:string,zh:string,risk:number,cost:number,insurance:string,mode:string,note:string}}={
-    EXW:{en:"Ex Works",zh:"工厂交货（指定交货地点）",risk:0,cost:0,insurance:"无强制投保义务",mode:"任何运输方式",note:"卖方在指定场所将货物置于买方处置，不负责装上买方车辆或出口清关"},
-    FCA:{en:"Free Carrier",zh:"货交承运人（指定交货地点）",risk:1,cost:1,insurance:"无强制投保义务",mode:"任何运输方式",note:"案例采用：卖方仓库装上买方来车并交承运人；卖方负责出口清关"},
-    CPT:{en:"Carriage Paid To",zh:"运费付至（指定目的地）",risk:1,cost:8,insurance:"无强制投保义务",mode:"任何运输方式",note:"卖方付运费到指定目的地，但风险在货交第一承运人时已经转移"},
-    CIP:{en:"Carriage and Insurance Paid To",zh:"运费及保险费付至（指定目的地）",risk:1,cost:8,insurance:"卖方须投保较高范围（通常ICC(A)）",mode:"任何运输方式",note:"风险早于费用终点转移；保险义务通常高于CIF"},
-    DAP:{en:"Delivered at Place",zh:"目的地交货（指定目的地，未卸货）",risk:8,cost:8,insurance:"无强制投保义务",mode:"任何运输方式",note:"卖方把货物运至指定目的地，在到达运输工具上备妥卸货；买方负责卸货与进口清关"},
-    DPU:{en:"Delivered at Place Unloaded",zh:"目的地卸货后交货（指定目的地）",risk:9,cost:9,insurance:"无强制投保义务",mode:"任何运输方式",note:"唯一要求卖方在目的地完成卸货后再交付的术语"},
-    DDP:{en:"Delivered Duty Paid",zh:"完税后交货（指定目的地）",risk:8,cost:8,insurance:"无强制投保义务",mode:"任何运输方式",note:"卖方负责出口、运输和进口清关及税费，在指定目的地备妥卸货"},
-    FAS:{en:"Free Alongside Ship",zh:"船边交货（指定装运港）",risk:3,cost:3,insurance:"无强制投保义务",mode:"仅海运/内河运输",note:"货物置于指定船舶船边时交付，买方负责装船与主运输"},
-    FOB:{en:"Free On Board",zh:"船上交货（指定装运港）",risk:4,cost:4,insurance:"无强制投保义务",mode:"仅海运/内河运输",note:"装运港货物装上买方指定船舶时交付；不再使用‘越过船舷’表述"},
-    CFR:{en:"Cost and Freight",zh:"成本加运费（指定目的港）",risk:4,cost:6,insurance:"无强制投保义务",mode:"仅海运/内河运输",note:"卖方付运费到目的港，但风险在装运港货物装上船时转移"},
-    CIF:{en:"Cost, Insurance and Freight",zh:"成本、保险费加运费（指定目的港）",risk:4,cost:6,insurance:"卖方须投保最低范围（通常ICC(C)）",mode:"仅海运/内河运输",note:"风险在装运港转移，费用和最低保险安排延伸到目的港"}
+  const data:{[k:string]:{en:string,zh:string,desc:string,risk:number,cost:number,insurance:string,mode:string,note:string}}={
+    EXW:{en:"Ex Works",zh:"工厂交货（指定交货地点）",desc:"卖方在指定地点（如工厂或仓库）将货物置于买方处置时即完成交货。卖方无需负责货物装货，也不需要为货物办理出口清关，是11种术语中卖方责任最小的条款。",risk:0,cost:0,insurance:"无强制投保义务",mode:"任何运输方式",note:"卖方在指定场所将货物置于买方处置，不负责装上买方车辆或出口清关"},
+    FCA:{en:"Free Carrier",zh:"货交承运人（指定交货地点）",desc:"若指定地点为卖方场所，货物装上买方安排的运输工具即完成交货；若为其他指定地点，货物装上卖方运输工具运抵该地点后，在卖方运输工具上准备卸货、置于承运人或买方指定方处置时即完成交货——卸货本身由承运人或买方负责，并非卖方义务。",risk:1,cost:1,insurance:"无强制投保义务",mode:"任何运输方式",note:"案例采用：卖方仓库装上买方来车并交承运人；卖方负责出口清关"},
+    CPT:{en:"Carriage Paid To",zh:"运费付至（指定目的地）",desc:"卖方将货物交付给其指定的承运人即完成交货，同时将贸易风险转移给买方；但卖方需负责支付货物运至约定目的地的运费。一旦完成交货，卖方不再对货物在运输途中是否完好、数量是否准确或能否按时抵达目的地负责。",risk:1,cost:8,insurance:"无强制投保义务",mode:"任何运输方式",note:"卖方付运费到指定目的地，但风险在货交第一承运人时已经转移"},
+    CIP:{en:"Carriage and Insurance Paid To",zh:"运费及保险费付至（指定目的地）",desc:"卖方将货物交付给其指定的承运人即完成交货，并将贸易风险转移给买方，责任划分方式与CPT相同；但卖方还需额外为买方购买货物运输保险，且Incoterms 2020要求CIP下的保险覆盖档次高于CIF。",risk:1,cost:8,insurance:"卖方须投保较高范围（通常ICC(A)）",mode:"任何运输方式",note:"风险早于费用终点转移；保险义务通常高于CIF"},
+    DAP:{en:"Delivered at Place",zh:"目的地交货（指定目的地，未卸货）",desc:"卖方在指定目的地或约定地点，将运输工具上准备卸载的货物置于买方处置时，即完成交货并将贸易风险转移给买方。卖方需承担货物运至该地点的全部费用和风险，但不包括目的地进口清关和进口税费——这部分由买方负责。",risk:8,cost:8,insurance:"无强制投保义务",mode:"任何运输方式",note:"卖方把货物运至指定目的地，在到达运输工具上备妥卸货；买方负责卸货与进口清关"},
+    DPU:{en:"Delivered at Place Unloaded",zh:"目的地卸货后交货（指定目的地）",desc:"卖方在指定目的地或约定地点，将运输工具上卸下的货物交给买方处置时，即完成交货，并将贸易风险转移给买方。卖方承担将货物运送到该地点并在该地点卸货所涉及的全部费用和风险——是11种术语中唯一明确要求卖方负责卸货的条款。",risk:9,cost:9,insurance:"无强制投保义务",mode:"任何运输方式",note:"唯一要求卖方在目的地完成卸货后再交付的术语"},
+    DDP:{en:"Delivered Duty Paid",zh:"完税后交货（指定目的地）",desc:"卖方在指定目的地或约定地点，将已完成进口清关、可供卸载的货物交付给买方。卖方承担将货物运至该地点的全部费用和贸易风险，包括进口关税和税费，交货与抵达目的地为同一时间节点。",risk:8,cost:8,insurance:"无强制投保义务",mode:"任何运输方式",note:"卖方负责出口、运输和进口清关及税费，在指定目的地备妥卸货"},
+    FAS:{en:"Free Alongside Ship",zh:"船边交货（指定装运港）",desc:"卖方在指定装运港将货物放置于买方指定船舶的船边（如码头或驳船上），或安排已完成船边交付的货物。货物灭失或损坏的贸易风险在货物到达船边时转移，此后的所有费用由买方承担。",risk:3,cost:3,insurance:"无强制投保义务",mode:"仅海运/内河运输",note:"货物置于指定船舶船边时交付，买方负责装船与主运输"},
+    FOB:{en:"Free On Board",zh:"船上交货（指定装运港）",desc:"卖方在指定装运港将货物装上买方指定船舶，或安排已完成装船的货物。货物灭失或损坏的贸易风险在货物装上船舶时转移，此后的所有费用由买方承担。",risk:4,cost:4,insurance:"无强制投保义务",mode:"仅海运/内河运输",note:"装运港货物装上买方指定船舶时交付；不再使用'越过船舷'表述"},
+    CFR:{en:"Cost and Freight",zh:"成本加运费（指定目的港）",desc:"卖方将货物装上船舶或安排已装船的货物。货物灭失或损坏的贸易风险在货物装上船舶时转移，无论货物最终是否完好、完整或按时抵达目的地，均视为卖方已完成交货义务；但卖方需订立运输合同并支付将货物运至指定目的港所需的运费。在此条款下，卖方无义务为买方购买保险。",risk:4,cost:6,insurance:"无强制投保义务",mode:"仅海运/内河运输",note:"卖方付运费到目的港，但风险在装运港货物装上船时转移"},
+    CIF:{en:"Cost, Insurance and Freight",zh:"成本、保险费加运费（指定目的港）",desc:"卖方将货物装上船舶或安排已装船的货物。货物灭失或损坏的贸易风险在货物装上船舶时转移，无论货物最终是否完好、完整或按时抵达目的地，均视为卖方已完成交货义务；与CFR相同，卖方需订立运输合同并支付将货物运至指定目的港所需的运费，并额外为买方购买货物运输保险至约定目的港。",risk:4,cost:6,insurance:"卖方须投保最低范围（通常ICC(C)）",mode:"仅海运/内河运输",note:"风险在装运港转移，费用和最低保险安排延伸到目的港"}
   };
   const d=data[term];
   const commonTerms=new Set(["FCA","FOB","CIF","DDP"]);
@@ -120,6 +120,9 @@ function IncotermsVisual(){
   return <div className="incoterms">
     <div className="switcher term-switcher" role="tablist" aria-label="选择贸易术语">{Object.keys(data).map(k=><button role="tab" aria-selected={term===k} key={k} onClick={()=>setTerm(k)}><span>{k}</span>{commonTerms.has(k)&&<small>常用</small>}</button>)}</div>
     <div className="selected-term"><strong>{term} · {d.en}</strong><span>{d.zh}</span><small>{d.mode}</small></div>
+
+    {/* Detailed definition from DHL reference */}
+    <div className="term-detail"><FileText size={16}/><div><strong>详细介绍</strong><p>{d.desc}</p></div></div>
 
     {/* Three-track visualization: Risk / Cost / Insurance */}
     <div className="incoterms-tracks" aria-label="风险、费用和保险三个维度的分界">
