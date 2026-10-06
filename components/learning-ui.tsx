@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search, Menu, X, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Check, AlertTriangle, PackageCheck, Factory, Truck, Ship, Landmark, FileText, CircleDollarSign, BookOpen } from "lucide-react";
+import { Search, Menu, X, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Check, AlertTriangle, PackageCheck, Factory, Truck, Ship, Landmark, FileText, CircleDollarSign, BookOpen, ZoomIn } from "lucide-react";
 import { caseFacts, glossary, notes, steps, topics, type Step, type Topic } from "@/lib/content";
+import { materialGuides } from "@/lib/materials";
 
 function Link({href,children,...props}:React.AnchorHTMLAttributes<HTMLAnchorElement>&{href:string}){
   return <a href={href} {...props}>{children}</a>;
@@ -72,10 +73,12 @@ export function TopicsIndex() {
 }
 
 export function TopicPage({ topic }: { topic: Topic }) {
-  const toc: [string,string][] = [["plain","一句话解释"],["visual","核心图解"],["details","详细说明"],["case","案例应用"],["pitfalls","关键点与误区"],["recap","复习摘要"],["sources","来源与范围"]];
+  const hasMaterials=Boolean(materialGuides[topic.slug]);
+  const toc: [string,string][] = [["plain","一句话解释"],["visual","核心图解"],...(hasMaterials?[["materials","办理与资料示例"] as [string,string]]:[]),["details","详细说明"],["case","案例应用"],["pitfalls","关键点与误区"],["recap","复习摘要"],["sources","来源与范围"]];
   return <><SiteHeader/><main className="article-layout"><MiniTOC ids={toc}/><article className="article"><Link className="back" href="/topics"><ArrowLeft size={16}/>返回进阶专题</Link><header className="article-head"><span className="eyebrow">{topic.category} · 核验于 {topic.updated}</span><h1>{topic.title}</h1><p>{topic.question}</p></header>
     <Section id="plain" title="一句话白话解释"><div className="plain-answer">{topic.plain}</div></Section>
     <Section id="visual" title="核心可视化图"><Visual topic={topic}/></Section>
+    {hasMaterials&&<MaterialGuide topicSlug={topic.slug}/>}
     <Section id="details" title="必要的详细说明"><div className="detail-stack">{topic.details.map((d,i)=><div key={d}><span>{String(i+1).padStart(2,"0")}</span><p>{renderTerms(d)}</p></div>)}</div></Section>
     <Section id="case" title="工厂案例中的应用"><div className="case-use"><Factory/><div><strong>{caseFacts.factory}</strong><p>{topic.caseUse}</p></div></div></Section>
     <Section id="pitfalls" title="关键点与常见误区"><div className="warning-box"><AlertTriangle/><ul>{topic.keyPoints.map(x=><li key={x}>{x}</li>)}</ul></div></Section>
@@ -83,6 +86,21 @@ export function TopicPage({ topic }: { topic: Topic }) {
     <Related slugs={topic.related}/>
     <Section id="sources" title="适用范围与来源"><p className="scope">面向中国大陆一般B2B货物出口的通识说明。具体商品、口岸、合同、银行和目的国规则可能不同；操作前请以当期官方系统和经办机构要求为准。</p>{topic.source.length?<div className="source-list">{topic.source.map(s=><a key={s.url} href={s.url} target="_blank" rel="noreferrer">{s.label}<ExternalLink size={15}/></a>)}</div>:<p className="scope">本页为流程与实务组织，暂无可直接覆盖全部情形的单一官方来源；涉及个案请向主管机构或专业人士核实。</p>}</Section>
   </article></main><SiteFooter/></>
+}
+
+function MaterialGuide({topicSlug}:{topicSlug:string}){
+  const guide=materialGuides[topicSlug];
+  return <Section id="materials" title="办理入口与资料示例">
+    <div className="material-intro"><strong>{guide.title}</strong><p>{guide.intro}</p></div>
+    <div className="material-cards">{guide.cards.map((card,i)=><article key={card.title} className="material-card"><span>{String(i+1).padStart(2,"0")}</span><h3>{card.title}</h3><dl><div><dt>找谁办理</dt><dd>{card.who}</dd></div><div><dt>准备什么</dt><dd>{card.prepare}</dd></div><div><dt>完成后得到什么</dt><dd>{card.result}</dd></div></dl><a href={card.url} target="_blank" rel="noreferrer">{card.linkLabel}<ExternalLink size={14}/></a></article>)}</div>
+    {guide.media&&<div className="material-gallery">{guide.media.map(item=><figure key={item.src}><a href={item.src} target="_blank" rel="noreferrer" aria-label={`查看大图：${item.title}`}><img src={item.src} alt={item.alt}/><span><ZoomIn size={16}/>点击查看大图</span></a><figcaption><strong>{item.title}</strong><p>{item.note}</p><a href={item.sourceUrl} target="_blank" rel="noreferrer">来源：{item.sourceLabel}<ExternalLink size={13}/></a></figcaption></figure>)}</div>}
+    {guide.invoiceExample&&<InvoiceCaseExample/>}
+    <div className="material-case"><strong>套入保温杯案例</strong><p>{guide.caseNote}</p></div>
+  </Section>
+}
+
+function InvoiceCaseExample(){
+  return <div className="invoice-example" aria-label="商业发票虚构教学示例"><div className="invoice-example-head"><div><small>COMMERCIAL INVOICE · 教学示例</small><h3>商业发票</h3></div><div><b>INV-TAO-260410</b><span>2026-04-10</span></div></div><div className="invoice-parties"><div><small>SELLER / 卖方</small><strong>{caseFacts.factory}</strong><span>地址：虚构教学地址，不用于真实业务</span></div><div><small>BUYER / 买方</small><strong>{caseFacts.buyer}</strong><span>地址：虚构教学地址，不用于真实业务</span></div></div><div className="invoice-meta"><span><small>币种</small><b>USD</b></span><span><small>贸易术语</small><b>{caseFacts.term}</b></span><span><small>原产地</small><b>中国（教学示例）</b></span></div><div className="invoice-table"><div className="invoice-row invoice-th"><span>货物描述</span><span>数量</span><span>单价</span><span>总价</span></div><div className="invoice-row"><span>{caseFacts.product}</span><span>{caseFacts.quantity}</span><span>{caseFacts.price}</span><span>{caseFacts.total}</span></div></div><div className="invoice-total"><span>发票总金额</span><strong>{caseFacts.total}</strong></div><p>核对提示：发票号、买卖方、货名、数量、币种、金额和贸易术语应与合同、装箱单及申报资料相互解释。</p></div>
 }
 
 function renderTerms(text:string){ const terms=Object.keys(glossary); const term=terms.find(t=>text.includes(t)); if(!term) return text; const [before,after]=text.split(term); return <>{before}<InlineTerm term={term}/>{after}</> }
