@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { steps, topics, notes } from "@/lib/content";
 
+export const dynamic = "force-static";
+
 const baseUrl = "https://tao-trade-school.pages.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
