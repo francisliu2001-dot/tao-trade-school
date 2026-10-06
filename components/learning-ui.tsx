@@ -1,9 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search, Menu, X, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Check, AlertTriangle, PackageCheck, Factory, Truck, Ship, Landmark, FileText, CircleDollarSign, BookOpen, ZoomIn } from "lucide-react";
+import { Search, Menu, X, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Check, AlertTriangle, PackageCheck, Factory, Truck, Ship, Landmark, FileText, BookOpen, ZoomIn } from "lucide-react";
 import { caseFacts, glossary, notes, steps, topics, type Step, type Topic } from "@/lib/content";
 import { materialGuides } from "@/lib/materials";
+import { LearnRoadmap, StepWorkshop } from "@/components/step-workshop";
 
 function Link({href,children,...props}:React.AnchorHTMLAttributes<HTMLAnchorElement>&{href:string}){
   return <a href={href} {...props}>{children}</a>;
@@ -41,7 +42,7 @@ export function HomePage() {
 }
 
 export function LearnIndex() {
-  return <><SiteHeader/><main className="wide-page"><div className="page-intro"><span className="eyebrow">教学示例 · 非真实经营成果</span><h1>一只保温杯的<br/>第一笔出口订单</h1><p>沿着8个节点阅读。桌面端像路线图，手机端自动变成纵向时间线。</p></div><CaseStrip/><ol className="roadmap">{steps.map((s,i)=><li key={s.slug}><Link href={`/learn/${s.slug}`}><span className="road-index">{String(i+1).padStart(2,"0")}</span><span><small>{s.date}</small><strong>{s.title}</strong><em>{s.happened.slice(0,54)}…</em></span></Link></li>)}</ol></main><SiteFooter/></>
+  return <><SiteHeader/><main className="wide-page"><div className="page-intro"><span className="eyebrow">教学示例 · 非真实经营成果</span><h1>跟着一只保温杯，<br/>走完第一笔出口订单</h1><p>每一步只做一个关键动作。完成状态只保存在当前浏览器，可随时重置，不需要登录。</p><a className="button dark learn-start" href={`/learn/${steps[0].slug}`}>从第1步开始</a></div><CaseStrip/><LearnRoadmap/></main><SiteFooter/></>
 }
 
 export function CaseStrip() { return <div className="case-strip"><span><b>产品</b>{caseFacts.product}</span><span><b>数量</b>{caseFacts.quantity}</span><span><b>总额</b>{caseFacts.total}</span><span><b>交付</b>{caseFacts.term}</span></div> }
@@ -50,13 +51,14 @@ function MiniTOC({ ids }: { ids: [string,string][] }) { return <aside className=
 
 export function StepPage({ step }: { step: Step }) {
   const index = steps.findIndex(s=>s.slug===step.slug); const prev=steps[index-1]; const next=steps[index+1];
-  const toc: [string,string][] = [["happened","发生了什么"],["roles","谁负责什么"],["why","为什么这样做"],["checks","核对清单"],["mistakes","常见错误"],["next","下一步"]];
+  const toc: [string,string][] = [["happened","发生了什么"],["roles","谁负责什么"],["why","为什么这样做"],["checks","核对清单"],["mistakes","常见错误"],["practice","跟着做一遍"],["next","下一步"]];
   return <><SiteHeader/><main className="article-layout"><MiniTOC ids={toc}/><article className="article"><Link className="back" href="/learn"><ArrowLeft size={16}/>返回路线图</Link><header className="article-head"><span className="eyebrow">第 {index+1} 步 · {step.date}</span><h1>{step.title}</h1><p>同一案例连续推进：{caseFacts.product}，{caseFacts.quantity}，{caseFacts.total}。</p></header><CaseTimeline current={index}/>
     <Section id="happened" title="此时发生了什么"><p>{step.happened}</p></Section>
     <Section id="roles" title="涉及哪些角色，谁负责什么"><div className="role-grid">{step.roles.map(x=>{const [a,b]=x.split("：");return <div key={x}><strong>{a}</strong><p>{b}</p></div>})}</div></Section>
     <Section id="why" title="为什么需要这样做"><p>{step.why}</p></Section>
     <Section id="checks" title="应该核对哪些信息"><Checklist items={step.checks}/></Section>
     <Section id="mistakes" title="常见错误"><div className="warning-box"><AlertTriangle/><ul>{step.mistakes.map(x=><li key={x}>{x}</li>)}</ul></div></Section>
+    <StepWorkshop slug={step.slug}/>
     <Section id="next" title="下一步如何推进"><div className="next-box">{step.next}</div></Section>
     <Related slugs={step.related}/><nav className="prev-next">{prev?<Link href={`/learn/${prev.slug}`}><ChevronLeft/>上一步<span>{prev.title}</span></Link>:<span/>}{next?<Link className="next" href={`/learn/${next.slug}`}>下一步<ChevronRight/><span>{next.title}</span></Link>:<Link className="next" href="/topics">进入专题<ChevronRight/><span>外贸进阶</span></Link>}</nav>
   </article></main><SiteFooter/></>

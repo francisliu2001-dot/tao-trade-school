@@ -1,4 +1,4 @@
-import { HomePage } from "@/components/learning-ui";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -20,9 +20,9 @@ export default function NotFound() {
         <h1>这一页不在学堂里</h1>
         <p>你访问的页面可能已被移动或从未存在。回到首页或进阶专题继续学习。</p>
         <div className="nf-links">
-          <a href="/">返回首页</a>
-          <a href="/topics">浏览进阶专题</a>
-          <a href="/learn">从 0 到 1</a>
+          <Link href="/">返回首页</Link>
+          <Link href="/topics">浏览进阶专题</Link>
+          <Link href="/learn">从 0 到 1</Link>
         </div>
       </main>
     </>
