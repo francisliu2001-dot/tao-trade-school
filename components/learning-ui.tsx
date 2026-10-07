@@ -5,6 +5,7 @@ import { Search, Menu, X, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Ch
 import { caseFacts, glossary, notes, steps, topics, type Step, type Topic } from "@/lib/content";
 import { materialGuides } from "@/lib/materials";
 import { LearnRoadmap, StepWorkshop } from "@/components/step-workshop";
+import { CustomsCases } from "@/components/customs-cases";
 
 function Link({href,children,...props}:React.AnchorHTMLAttributes<HTMLAnchorElement>&{href:string}){
   return <a href={href} {...props}>{children}</a>;
@@ -76,10 +77,11 @@ export function TopicsIndex() {
 
 export function TopicPage({ topic }: { topic: Topic }) {
   const hasMaterials=Boolean(materialGuides[topic.slug]);
-  const toc: [string,string][] = [["plain","一句话解释"],["visual","核心图解"],...(hasMaterials?[["materials","办理与资料示例"] as [string,string]]:[]),["details","详细说明"],["case","案例应用"],["pitfalls","关键点与误区"],["recap","复习摘要"],["sources","来源与范围"]];
+  const toc: [string,string][] = [["plain","一句话解释"],["visual","核心图解"],...(topic.slug==="customs"?[["case-workshop","双案例实操"] as [string,string]]:[]),...(hasMaterials?[["materials","办理与资料示例"] as [string,string]]:[]),["details","详细说明"],["case","案例应用"],["pitfalls","关键点与误区"],["recap","复习摘要"],["sources","来源与范围"]];
   return <><SiteHeader/><main className="article-layout"><MiniTOC ids={toc}/><article className="article"><Link className="back" href="/topics"><ArrowLeft size={16}/>返回进阶专题</Link><header className="article-head"><span className="eyebrow">{topic.category} · 核验于 {topic.updated}</span><h1>{topic.title}</h1><p>{topic.question}</p></header>
     <Section id="plain" title="一句话白话解释"><div className="plain-answer">{topic.plain}</div></Section>
     <Section id="visual" title="核心可视化图"><Visual topic={topic}/></Section>
+    {topic.slug==="customs"&&<Section id="case-workshop" title="保温杯与洗发水：两套报关案例"><CustomsCases defaultCase="shampoo" showSources/></Section>}
     {hasMaterials&&<MaterialGuide topicSlug={topic.slug}/>}
     <Section id="details" title="必要的详细说明"><div className="detail-stack">{topic.details.map((d,i)=><div key={d}><span>{String(i+1).padStart(2,"0")}</span><p>{renderTerms(d)}</p></div>)}</div></Section>
     <Section id="case" title="工厂案例中的应用"><div className="case-use"><Factory/><div><strong>{caseFacts.factory}</strong><p>{topic.caseUse}</p></div></div></Section>

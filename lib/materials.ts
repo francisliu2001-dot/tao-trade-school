@@ -98,7 +98,7 @@ export const materialGuides: Record<string, MaterialGuide> = {
         sourceUrl: "https://www.singlewindow.cn/fs/STADOCROOT/F8/9B/53/7D52670F45AD7E4C9F12D61D26.pdf",
       },
     ],
-    caseNote: "案例数据应统一为2,000个保温杯、USD 17,600、100箱、净重620kg、毛重760kg；HS编码仍须以实际商品资料核定。",
+    caseNote: "保温杯案例保持2,000个、USD 17,600，箱数和重量未知时不得猜填；洗发水案例为2,000瓶、100箱×20瓶，价格、重量和HS编码同样保持待核实。",
   },
   "invoice-packing": {
     title: "商业发票要让同一批货说同一种语言",
