@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://francisliu2001-dot.github.io/tao-trade-school/sitemap.xml
