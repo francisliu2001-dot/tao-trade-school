@@ -7,6 +7,7 @@ import { steps } from "@/lib/content";
 import { CustomsCases } from "@/components/customs-cases";
 
 const STORE = "tao-learn-progress-v1";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 function readDone(): string[] {
   if (typeof window === "undefined") return [];
@@ -20,7 +21,7 @@ export function LearnRoadmap() {
   return <>
     <div className="progress-panel"><div><strong>你的模拟订单进度</strong><span>{done.length} / 8 步完成 · 仅保存在本机浏览器</span></div><div className="progress-meter" aria-label={`已完成${done.length}步`}><i style={{width:`${done.length/8*100}%`}}/></div><button onClick={reset}><RotateCcw size={15}/>重置</button></div>
     <div className="road-groups"><span>拿到订单</span><span>完成交付</span></div>
-    <ol className="roadmap">{steps.map((s,i)=><li key={s.slug} className={done.includes(s.slug)?"is-complete":""}><a href={`/learn/${s.slug}`}><span className="road-index">{done.includes(s.slug)?<Check size={18}/>:String(i+1).padStart(2,"0")}</span><span><small>第 {i+1} 步 · {s.date}</small><strong>{s.title}</strong><em>{actions[s.slug].action}</em><b>{actions[s.slug].outcome}</b></span></a></li>)}</ol>
+    <ol className="roadmap">{steps.map((s,i)=><li key={s.slug} className={done.includes(s.slug)?"is-complete":""}><a href={`${BASE_PATH}/learn/${s.slug}`}><span className="road-index">{done.includes(s.slug)?<Check size={18}/>:String(i+1).padStart(2,"0")}</span><span><small>第 {i+1} 步 · {s.date}</small><strong>{s.title}</strong><em>{actions[s.slug].action}</em><b>{actions[s.slug].outcome}</b></span></a></li>)}</ol>
   </>;
 }
 
@@ -59,7 +60,7 @@ function StepComplete({slug}:{slug:string}) {
 
 function DownloadPanel({slug}:{slug:string}) {
   const files=downloads[slug]||[]; if(!files.length)return null;
-  return <div className="download-panel"><div><strong>带走本步模板</strong><p>Excel 文件可直接打开编辑；案例页用于理解，正式使用请替换全部虚构信息。</p></div><div>{files.map(x=><a key={x.file} href={`/downloads/${encodeURIComponent(x.file)}`} download><Download size={16}/>{x.name}</a>)}</div></div>;
+  return <div className="download-panel"><div><strong>带走本步模板</strong><p>Excel 文件可直接打开编辑；案例页用于理解，正式使用请替换全部虚构信息。</p></div><div>{files.map(x=><a key={x.file} href={`${BASE_PATH}/downloads/${encodeURIComponent(x.file)}`} download><Download size={16}/>{x.name}</a>)}</div></div>;
 }
 
 function StatusList({items}:{items:{title:string,detail:string,who:string}[]}) {
@@ -72,7 +73,7 @@ function Prepare(){return <><p className="workshop-lead">逐项选择状态，�
   {title:"首笔货物贸易外汇收支准备",detail:"按适用情形向境内银行确认名录登记和收款资料。不要沿用旧的逐票外汇核销说法。",who:"财务 / 经办银行"},
   {title:"产品资料与HS编码核验",detail:"用材质、用途、结构等客观资料判断归类；9617.00仅为本案例教学提示。",who:"工程 / 报关行"},
   {title:"目的国准入与标签",detail:"确认食品接触、材料、标签及测试要求来自哪里、适用于哪一批货。",who:"业务 / 合规 / 买方"},
-]}/><a className="inline-deep-link" href="/topics/export-readiness">查看“出口资质与准备”专题 →</a></>}
+]}/><a className="inline-deep-link" href={`${BASE_PATH}/topics/export-readiness`}>查看“出口资质与准备”专题 →</a></>}
 
 const channels=[
   ["Google 搜索","搜索产品+distributor/importer，先验证公司官网","https://www.google.com/"],
@@ -89,7 +90,7 @@ function Inquiry(){const fields=[{n:"容量",v:"600ml",known:true},{n:"数量",v
 
 function Quote(){const [qty,setQty]=useState(2000),[cost,setCost]=useState(6.4),[pack,setPack]=useState(.45),[logo,setLogo]=useState(.18),[local,setLocal]=useState(.12),[one,setOne]=useState(80),[rate,setRate]=useState(7.1),[mode,setMode]=useState<"markup"|"margin">("margin"),[profit,setProfit]=useState(20);const unit=cost+pack+logo+local+one/Math.max(1,qty);const valid=qty>0&&rate>0&&(mode==="markup"||profit<100);const usd=valid?(mode==="markup"?unit*(1+profit/100):unit/(1-profit/100))/rate:0;return <><p className="workshop-lead">这是教学测算，不接入实时汇率或退税率。未知退税不计入，避免把不确定收益先当成利润。</p><div className="calc-grid"><label>数量<input type="number" value={qty} onChange={e=>setQty(+e.target.value)}/></label><label>产品成本 CNY<input type="number" step=".01" value={cost} onChange={e=>setCost(+e.target.value)}/></label><label>包装 CNY<input type="number" step=".01" value={pack} onChange={e=>setPack(+e.target.value)}/></label><label>Logo CNY<input type="number" step=".01" value={logo} onChange={e=>setLogo(+e.target.value)}/></label><label>国内费用/个 CNY<input type="number" step=".01" value={local} onChange={e=>setLocal(+e.target.value)}/></label><label>一次性费用 CNY<input type="number" step="1" value={one} onChange={e=>setOne(+e.target.value)}/></label><label>教学汇率 CNY/USD<input type="number" step=".01" value={rate} onChange={e=>setRate(+e.target.value)}/></label><label>目标比例 %<input type="number" value={profit} onChange={e=>setProfit(+e.target.value)}/></label></div><div className="calc-mode"><button aria-pressed={mode==="markup"} onClick={()=>setMode("markup")}>加价率</button><button aria-pressed={mode==="margin"} onClick={()=>setMode("margin")}>毛利率</button></div>{valid?<div className="calc-result"><span>单位总成本 <b>CNY {unit.toFixed(2)}</b></span><span>测算报价 <b>USD {usd.toFixed(2)} / 个</b></span><span>总额 <b>USD {(usd*qty).toLocaleString(undefined,{maximumFractionDigits:2})}</b></span><small>{mode==="markup"?"售价=成本×(1+加价率)":"售价=成本÷(1-毛利率)"}</small></div>:<div className="calc-error">数量和汇率必须大于0，毛利率必须小于100%。</div>}<div className="case-anchor"><strong>案例正式报价仍采用</strong><span>USD 8.80 × 2,000 = USD 17,600</span><small>FCA宁波卖方仓库；有效期10天；样品及快递USD 80另收。PI阶段付款方式仍待协商。</small></div><button className="print-button" onClick={()=>window.print()}>打印 / 另存为 PDF</button></>}
 
-function Terms(){const [term,setTerm]=useState("FCA"),[pct,setPct]=useState(30);const paid=17600*pct/100;const terms:{[k:string]:string[] }={FCA:["卖方仓库交承运人","交付时风险转移","买方安排主运输","无强制投保义务"],FOB:["装运港装上船","装船时风险转移","买方承担主运费","仅海运/内河"],CIF:["装运港装上船","装船时风险转移","卖方付运费到目的港","卖方安排最低范围保险"]};return <><div className="mini-switch">{Object.keys(terms).map(x=><button key={x} aria-pressed={x===term} onClick={()=>setTerm(x)}>{x}</button>)}</div><div className="term-four">{terms[term].map((x,i)=><div key={x}><small>{["交付","风险","费用","保险"][i]}</small><strong>{x}</strong></div>)}</div><a className="inline-deep-link" href="/topics/incoterms">打开11项术语完整交互图 →</a><div className="payment-slider"><label>定金比例：<b>{pct}%</b><input type="range" min="0" max="100" value={pct} onChange={e=>setPct(+e.target.value)}/></label><div><span>定金 <b>USD {paid.toLocaleString()}</b></span><span>余款 <b>USD {(17600-paid).toLocaleString()}</b></span></div><p>本案例合同最终确定30%定金（USD 5,280）+ 70%余款（USD 12,320），以银行实际到账为准。</p></div><StatusList items={[{title:"规格、确认样和包装附件",detail:"版本号、验收方法和变更流程都写清。",who:"业务/质检"},{title:"FCA宁波卖方仓库",detail:"地点要具体到可执行位置，并明确来车与装货安排。",who:"双方业务/货代"},{title:"付款与开工条件",detail:"3月12日定金实际到账后开工；4月9日余款实际到账。",who:"财务"},{title:"法律适用与争议解决",detail:"不要只写“友好协商”，应明确机制与文本优先级。",who:"负责人/法务"}]}/></>}
+function Terms(){const [term,setTerm]=useState("FCA"),[pct,setPct]=useState(30);const paid=17600*pct/100;const terms:{[k:string]:string[] }={FCA:["卖方仓库交承运人","交付时风险转移","买方安排主运输","无强制投保义务"],FOB:["装运港装上船","装船时风险转移","买方承担主运费","仅海运/内河"],CIF:["装运港装上船","装船时风险转移","卖方付运费到目的港","卖方安排最低范围保险"]};return <><div className="mini-switch">{Object.keys(terms).map(x=><button key={x} aria-pressed={x===term} onClick={()=>setTerm(x)}>{x}</button>)}</div><div className="term-four">{terms[term].map((x,i)=><div key={x}><small>{["交付","风险","费用","保险"][i]}</small><strong>{x}</strong></div>)}</div><a className="inline-deep-link" href={`${BASE_PATH}/topics/incoterms`}>打开11项术语完整交互图 →</a><div className="payment-slider"><label>定金比例：<b>{pct}%</b><input type="range" min="0" max="100" value={pct} onChange={e=>setPct(+e.target.value)}/></label><div><span>定金 <b>USD {paid.toLocaleString()}</b></span><span>余款 <b>USD {(17600-paid).toLocaleString()}</b></span></div><p>本案例合同最终确定30%定金（USD 5,280）+ 70%余款（USD 12,320），以银行实际到账为准。</p></div><StatusList items={[{title:"规格、确认样和包装附件",detail:"版本号、验收方法和变更流程都写清。",who:"业务/质检"},{title:"FCA宁波卖方仓库",detail:"地点要具体到可执行位置，并明确来车与装货安排。",who:"双方业务/货代"},{title:"付款与开工条件",detail:"3月12日定金实际到账后开工；4月9日余款实际到账。",who:"财务"},{title:"法律适用与争议解决",detail:"不要只写“友好协商”，应明确机制与文本优先级。",who:"负责人/法务"}]}/></>}
 
 function Production(){const [dates,setDates]=useState(["2026-03-13","2026-03-18","2026-03-30","2026-04-08","2026-04-11"]);const labels=["生产启动","首件确认","中期检查","终检","交承运人"];const conflict=dates.some((x,i)=>i>0&&x<dates[i-1]);return <><p className="workshop-lead">拖动日期不是必需；直接选择日期即可。每个节点展开后都应能回答：谁做、查什么、留下什么证据、异常怎么办。</p><div className="date-timeline">{dates.map((d,i)=><label key={labels[i]}><span>{i+1}</span><strong>{labels[i]}</strong><input type="date" value={d} onChange={e=>setDates(dates.map((x,j)=>j===i?e.target.value:x))}/><small>{["跟单：版本与物料齐套","质检：确认样与首件记录","质检：进度与关键缺陷","质检/买方：按合同约定方法","业务/仓库：签收证据"][i]}</small></label>)}</div>{conflict&&<div className="calc-error">日期顺序冲突：后一个节点不能早于前一个节点。</div>}<p className="scope-note">25天是本案例计划，不是通用生产周期；抽样方式、接受标准和第三方验货应由合同或书面约定确定。</p></>}
 

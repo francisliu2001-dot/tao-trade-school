@@ -3,7 +3,7 @@ import { steps, topics, notes } from "@/lib/content";
 
 export const dynamic = "force-static";
 
-const baseUrl = "https://tao-trade-school.pages.dev";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tao-trade-school.francisliu2001.chatgpt.site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [

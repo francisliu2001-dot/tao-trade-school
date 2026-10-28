@@ -57,7 +57,7 @@ export const materialGuides: Record<string, MaterialGuide> = {
     ],
     media: [
       {
-        src: "/materials/fx-registration-preview.png",
+        src: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/materials/fx-registration-preview.png`,
         alt: "贸易外汇收支企业名录申请表空白样表",
         title: "贸易外汇收支企业名录申请表",
         note: "官方空白表预览。重点认识统一社会信用代码、企业名称、联系人等字段；不要在公开页面展示真实身份证号或平台初始密码。",
@@ -82,7 +82,7 @@ export const materialGuides: Record<string, MaterialGuide> = {
     ],
     media: [
       {
-        src: "/materials/customs-export-menu.png",
+        src: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/materials/customs-export-menu.png`,
         alt: "国际贸易单一窗口出口整合申报菜单历史界面",
         title: "先找到“出口整合申报”入口",
         note: "2024版用户手册历史界面，仅用于认识入口位置；当前菜单与操作以现行系统为准。",
@@ -90,7 +90,7 @@ export const materialGuides: Record<string, MaterialGuide> = {
         sourceUrl: "https://www.singlewindow.cn/fs/STADOCROOT/F8/9B/53/7D52670F45AD7E4C9F12D61D26.pdf",
       },
       {
-        src: "/materials/customs-export-form.png",
+        src: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/materials/customs-export-form.png`,
         alt: "国际贸易单一窗口出口报关单整合申报历史界面",
         title: "申报界面要核对哪些字段",
         note: "重点看境内收发货人、合同协议号、成交方式、商品编号、品名、数量、金额、毛重/净重、原产国与最终目的国。",

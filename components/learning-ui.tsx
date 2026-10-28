@@ -7,8 +7,11 @@ import { materialGuides } from "@/lib/materials";
 import { LearnRoadmap, StepWorkshop } from "@/components/step-workshop";
 import { CustomsCases } from "@/components/customs-cases";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 function Link({href,children,...props}:React.AnchorHTMLAttributes<HTMLAnchorElement>&{href:string}){
-  return <a href={href} {...props}>{children}</a>;
+  const resolvedHref = href.startsWith("/") ? `${BASE_PATH}${href}` : href;
+  return <a href={resolvedHref} {...props}>{children}</a>;
 }
 
 export function SiteHeader() {
@@ -43,7 +46,7 @@ export function HomePage() {
 }
 
 export function LearnIndex() {
-  return <><SiteHeader/><main className="wide-page"><div className="page-intro"><span className="eyebrow">教学示例 · 非真实经营成果</span><h1>跟着一只保温杯，<br/>走完第一笔出口订单</h1><p>每一步只做一个关键动作。完成状态只保存在当前浏览器，可随时重置，不需要登录。</p><a className="button dark learn-start" href={`/learn/${steps[0].slug}`}>从第1步开始</a></div><CaseStrip/><LearnRoadmap/></main><SiteFooter/></>
+  return <><SiteHeader/><main className="wide-page"><div className="page-intro"><span className="eyebrow">教学示例 · 非真实经营成果</span><h1>跟着一只保温杯，<br/>走完第一笔出口订单</h1><p>每一步只做一个关键动作。完成状态只保存在当前浏览器，可随时重置，不需要登录。</p><a className="button dark learn-start" href={`${BASE_PATH}/learn/${steps[0].slug}`}>从第1步开始</a></div><CaseStrip/><LearnRoadmap/></main><SiteFooter/></>
 }
 
 export function CaseStrip() { return <div className="case-strip"><span><b>产品</b>{caseFacts.product}</span><span><b>数量</b>{caseFacts.quantity}</span><span><b>总额</b>{caseFacts.total}</span><span><b>交付</b>{caseFacts.term}</span></div> }
